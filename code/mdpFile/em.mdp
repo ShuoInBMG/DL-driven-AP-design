@@ -1,0 +1,80 @@
+; RUN CONTROL PARAMETERS = 
+; MARTINI - Most simulations are stable with dt=40 fs,
+; some (especially rings) require 20-30 fs.
+; The range of time steps used for parametrization  
+; is 20-40 fs, using smaller time steps is therefore not recommended.
+; These parameters are for use with GROMACS 5.x and are discussed in de Jong et al, doi:10.1016/j.cpc.2015.09.014
+
+integrator               = steep
+; start time and timestep in ps
+tinit                    = 0.0
+dt                       = 0.025
+nsteps                   = 5000
+; number of steps for center of mass motion removal = 
+nstcomm                  = 1
+comm-grps		 = 
+emtol                    = 20
+
+; OUTPUT CONTROL OPTIONS = 
+; Output frequency for coords (x), velocities (v) and forces (f) = 
+nstxout                  = 0
+nstvout                  = 0
+nstfout                  = 0
+; Output frequency for energies to log file and energy file = 
+nstlog                   = 100
+nstenergy                = 100
+; Output frequency and precision for xtc file = 
+nstxout-compressed                = 0
+compressed-x-precision            = 0
+
+; NEIGHBORSEARCHING PARAMETERS = 
+; MARTINI - no need for more frequent updates 
+; or larger neighborlist cut-off due
+; to the use of shifted potential energy functions.
+
+cutoff-scheme            = Verlet
+; nblist update frequency = 
+nstlist                  = 20
+; ns algorithm (simple or grid) = 
+ns_type                  = grid
+; Periodic boundary conditions: xyz or no = 
+pbc                      = xyz 
+
+; OPTIONS FOR ELECTROSTATICS AND VDW = 
+; MARTINI - vdw and electrostatic interactions are used
+; in their shifted forms. Changing to other types of
+; electrostatics will affect the general performance of
+; the model.
+
+; Method for doing electrostatics = 
+coulombtype              = reaction-field
+rcoulomb                 = 1.1
+; Dielectric constant (DC) for cut-off or DC of reaction field = 
+epsilon_r                = 15
+epsilon_rf               = 0
+; Method for doing Van der Waals = 
+vdw_type                 = cut-off 
+; cut-off lengths        = 
+rvdw                     = 1.1
+vdw-modifier             = Potential-shift-verlet
+; Apply long range dispersion corrections for Energy and Pressure = 
+DispCorr                 = No
+
+; OPTIONS FOR WEAK COUPLING ALGORITHMS = 
+; MARTINI - normal temperature and pressure coupling schemes 
+; can be used. It is recommended to couple individual groups
+; in your system seperately.
+
+; Temperature coupling   = 
+tcoupl                   = no
+
+; GENERATE VELOCITIES FOR STARTUP RUN = 
+gen_vel                  = no
+
+
+constraints              = none 
+constraint_algorithm     = Lincs
+continuation             = no
+lincs_order              = 8
+lincs_warnangle          = 30
+
